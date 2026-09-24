@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:QRReceiptScanner.Models"
+             xmlns:pages="clr-namespace:QRReceiptScanner.Pages"
+             x:Class="QRReceiptScanner.Pages.ReceiptDetailPage"
+             Title="Рачун">
+
+    <ContentPage.Resources>
+        <Style x:Key="SectionHeading" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="0,18,0,4" />
+        </Style>
+        <Style x:Key="Muted" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout x:Name="Root" Padding="16" Spacing="2" SizeChanged="OnJournalSizeChanged">
+
+            <Label x:Name="TitleLabel" FontSize="20" FontAttributes="Bold" LineBreakMode="WordWrap" />
+            <Label x:Name="AmountLabel" FontSize="26" FontAttributes="Bold" />
+            <Label x:Name="StatusLabel" Style="{StaticResource Muted}" />
+            <Label x:Name="WarningLabel" IsVisible="False" TextColor="{StaticResource Magenta}" LineBreakMode="WordWrap" />
+
+            <!-- Everything the verification page reports, blank fields omitted. -->
+            <Label Text="Детаљи" Style="{StaticResource SectionHeading}" />
+            <VerticalStackLayout x:Name="DetailsHost" BindableLayout.ItemsSource="{Binding Details}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="pages:DetailRow">
+                        <Grid ColumnDefinitions="140,*" Padding="0,3">
+                            <Label Grid.Column="0" Text="{Binding Label}" Style="{StaticResource Muted}" />
+                            <Label Grid.Column="1" Text="{Binding Value}" LineBreakMode="WordWrap" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label x:Name="ItemsHeading" Text="Ставке" Style="{StaticResource SectionHeading}" />
+            <VerticalStackLayout x:Name="ItemsHost" BindableLayout.ItemsSource="{Binding Receipt.Items}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:ReceiptItem">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Padding="0,6">
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" LineBreakMode="WordWrap" />
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding DisplayTotal}" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                   Text="{Binding DisplayQuantity}" Style="{StaticResource Muted}" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label x:Name="TaxesHeading" Text="Порез" Style="{StaticResource SectionHeading}" />
+            <VerticalStackLayout x:Name="TaxesHost" BindableLayout.ItemsSource="{Binding Receipt.Taxes}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:TaxItem">
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,3">
+                            <Label Grid.Column="0" Text="{Binding DisplayName}" />
+                            <Label Grid.Column="1" Text="{Binding DisplayAmount}" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label x:Name="PaymentsHeading" Text="Плаћање" Style="{StaticResource SectionHeading}" />
+            <VerticalStackLayout x:Name="PaymentsHost" BindableLayout.ItemsSource="{Binding Receipt.Payments}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:PaymentItem">
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,3">
+                            <Label Grid.Column="0" Text="{Binding Method}" />
+                            <Label Grid.Column="1" Text="{Binding DisplayAmount}" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <Label x:Name="JournalHeading" Text="Штампани рачун" Style="{StaticResource SectionHeading}" />
+            <!-- Sized to the receipt text and centred, so it reads like the paper slip;
+                 OnJournalSizeChanged holds the box to the width of the text. -->
+            <Border x:Name="JournalBorder" Padding="10" HorizontalOptions="Center"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}">
+                <!-- One scroller around the whole slip, so the code stays aligned with the text. -->
+                <ScrollView x:Name="JournalScroll" Orientation="Horizontal">
+                    <VerticalStackLayout Spacing="8">
+                        <Label x:Name="JournalLabel" FontFamily="Monospace" FontSize="11" SizeChanged="OnJournalSizeChanged" />
+
+                        <!-- As on paper: the verification QR code prints after the last row of "="
+                             signs and before the closing line of the receipt. -->
+                        <Image x:Name="QrImage"
+                               Aspect="AspectFit"
+                               WidthRequest="120"
+                               HeightRequest="120"
+                               HorizontalOptions="Start"
+                               SemanticProperties.Description="QR код са линком за проверу рачуна" />
+
+                        <Label x:Name="JournalFooterLabel" FontFamily="Monospace" FontSize="11" SizeChanged="OnJournalSizeChanged" />
+
+                        <!-- Barcodes added by hand, printed under the slip the way a shop
+                             staples a warranty label to it. Filled in by Render(). -->
+                        <VerticalStackLayout x:Name="ExtraBarcodesHost" Spacing="10" IsVisible="False" />
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+
+            <Button Text="Додај додатни бар код" Clicked="OnAddBarcodeClicked" Margin="0,24,0,0" />
+
+            <Button Text="Обриши рачун" Clicked="OnDeleteClicked"
+                    Style="{StaticResource DangerButton}" Margin="0,8,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

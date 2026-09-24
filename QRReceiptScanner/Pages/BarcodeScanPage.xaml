@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QRReceiptScanner.Pages.BarcodeScanPage"
+             Title="Додатни бар код">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Created in code so a machine without a camera never instantiates it. -->
+        <Grid x:Name="CameraHost" Grid.Row="0" />
+
+        <Label x:Name="CameraMessage"
+               Grid.Row="0"
+               Margin="24"
+               IsVisible="False"
+               HorizontalTextAlignment="Center"
+               VerticalOptions="Center"
+               LineBreakMode="WordWrap" />
+
+        <VerticalStackLayout Grid.Row="1" Padding="16" Spacing="10">
+
+            <Label x:Name="StatusLabel"
+                   Text="Усмери камеру ка бар коду."
+                   HorizontalTextAlignment="Center" />
+
+            <Button x:Name="StartCameraButton"
+                    Text="Укључи камеру"
+                    IsVisible="False"
+                    Clicked="OnStartCameraClicked" />
+
+            <!-- Low light is the usual reason a code will not read. -->
+            <Button x:Name="TorchButton"
+                    Text="Упали лампу"
+                    IsVisible="False"
+                    Clicked="OnTorchClicked" />
+
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>

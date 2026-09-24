@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QRReceiptScanner.Pages.StatisticsPage"
+             Title="Статистика">
+
+    <ContentPage.Resources>
+        <Style x:Key="ChartHeading" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style x:Key="Caption" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView x:Name="PageScroll">
+        <VerticalStackLayout Padding="16,20" Spacing="8" MaximumWidthRequest="640">
+
+            <Label x:Name="EmptyLabel"
+                   Text="Још ништа није скенирано. Скенирај рачун и његова потрошња ће се појавити овде."
+                   IsVisible="False"
+                   Margin="0,24"
+                   HorizontalTextAlignment="Center" />
+
+            <VerticalStackLayout x:Name="ChartsHost" Spacing="8">
+
+                <!-- The headline figure: everything stored, in one number. -->
+                <Label x:Name="TotalLabel" FontSize="30" FontAttributes="Bold" />
+                <Label x:Name="TotalCaption" Style="{StaticResource Caption}" />
+
+                <!-- Chart 1: the last twelve months. One series, so the heading names
+                     it and no legend box is needed. -->
+                <Label Text="Последњих 12 месеци" Style="{StaticResource ChartHeading}" Margin="0,24,0,0" />
+                <Label x:Name="MonthlyCaption" Style="{StaticResource Caption}" />
+                <!-- An explicit surface, not transparency: a GraphicsView with no background
+                     is skipped by hit-testing on Windows, so hover would never fire. -->
+                <GraphicsView x:Name="MonthlyChart" HeightRequest="200" Margin="0,8,0,0"
+                              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+                    <GraphicsView.GestureRecognizers>
+                        <PointerGestureRecognizer PointerMoved="OnMonthlyPointerMoved" PointerExited="OnPointerExited" />
+                        <TapGestureRecognizer Tapped="OnMonthlyTapped" />
+                    </GraphicsView.GestureRecognizers>
+                </GraphicsView>
+
+                <!-- Chart 2: every year on record. -->
+                <Label Text="По годинама" Style="{StaticResource ChartHeading}" Margin="0,24,0,0" />
+                <Label x:Name="YearlyCaption" Style="{StaticResource Caption}" />
+                <GraphicsView x:Name="YearlyChart" HeightRequest="200" Margin="0,8,0,0"
+                              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+                    <GraphicsView.GestureRecognizers>
+                        <PointerGestureRecognizer PointerMoved="OnYearlyPointerMoved" PointerExited="OnPointerExited" />
+                        <TapGestureRecognizer Tapped="OnYearlyTapped" />
+                    </GraphicsView.GestureRecognizers>
+                </GraphicsView>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
