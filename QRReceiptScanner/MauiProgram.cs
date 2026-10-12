@@ -43,6 +43,8 @@ namespace QRReceiptScanner
             builder.Services.AddTransient<ReceiptListPage>();
             builder.Services.AddTransient<ReceiptDetailPage>();
             builder.Services.AddTransient<StatisticsPage>();
+            builder.Services.AddTransient<ArticleListPage>();
+            builder.Services.AddTransient<ArticlePurchasesPage>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

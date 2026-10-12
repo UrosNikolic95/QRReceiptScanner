@@ -29,6 +29,11 @@
                     HeightRequest="56"
                     SemanticProperties.Hint="Приказује све рачуне сачуване на овом уређају" />
 
+            <Button Text="Артикли"
+                    Clicked="OnArticlesClicked"
+                    HeightRequest="56"
+                    SemanticProperties.Hint="Приказује све купљене артикле из свих рачуна" />
+
             <Button Text="Статистика"
                     Clicked="OnStatisticsClicked"
                     HeightRequest="56"

@@ -32,5 +32,7 @@ namespace QRReceiptScanner
         private async void OnListClicked(object? sender, EventArgs e) => await Shell.Current.GoToAsync(nameof(ReceiptListPage));
 
         private async void OnStatisticsClicked(object? sender, EventArgs e) => await Shell.Current.GoToAsync(nameof(StatisticsPage));
+
+        private async void OnArticlesClicked(object? sender, EventArgs e) => await Shell.Current.GoToAsync(nameof(ArticleListPage));
     }
 }

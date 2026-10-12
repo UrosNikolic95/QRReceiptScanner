@@ -19,6 +19,10 @@ public static class SerbianText
 
     public static string Items(int count) => Form(count, "ставка", "ставке", "ставки");
 
+    public static string Articles(int count) => Form(count, "артикал", "артикла", "артикала");
+
+    public static string Purchases(int count) => Form(count, "куповина", "куповине", "куповина");
+
     public static string Characters(int count) => Form(count, "знак", "знака", "знакова");
 
     public static string Months(int count) => Form(count, "месец", "месеца", "месеци");

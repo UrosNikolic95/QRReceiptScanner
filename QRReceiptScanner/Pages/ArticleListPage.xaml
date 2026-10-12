@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:QRReceiptScanner.Services"
+             x:Class="QRReceiptScanner.Pages.ArticleListPage"
+             Title="Артикли">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <Label x:Name="TotalLabel"
+               Grid.Row="0"
+               Padding="16,12"
+               FontAttributes="Bold" />
+
+        <Label x:Name="EmptyLabel"
+               Grid.Row="1"
+               Text="Још нема купљених артикала."
+               IsVisible="False"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+        <RefreshView x:Name="Refresher" Grid.Row="1" Refreshing="OnRefreshing">
+            <CollectionView x:Name="ArticleList"
+                            SelectionMode="Single"
+                            SelectionChanged="OnArticleSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="services:ArticleSummary">
+                        <Grid Padding="16,12" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation" />
+
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding DisplayTotal}"
+                                   FontAttributes="Bold" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                   Text="{Binding DisplaySubtitle}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+    </Grid>
+
+</ContentPage>

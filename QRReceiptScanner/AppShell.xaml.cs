@@ -15,6 +15,8 @@ namespace QRReceiptScanner
             Register<ReceiptListPage>(services);
             Register<ReceiptDetailPage>(services);
             Register<StatisticsPage>(services);
+            Register<ArticleListPage>(services);
+            Register<ArticlePurchasesPage>(services);
         }
 
         private static void Register<TPage>(IServiceProvider services) where TPage : Page =>

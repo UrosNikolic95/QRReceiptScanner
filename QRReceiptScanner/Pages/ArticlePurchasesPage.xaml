@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:services="clr-namespace:QRReceiptScanner.Services"
+             x:Class="QRReceiptScanner.Pages.ArticlePurchasesPage"
+             Title="Куповине">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <VerticalStackLayout Grid.Row="0" Padding="16,12" Spacing="4">
+            <Label x:Name="NameLabel"
+                   FontAttributes="Bold"
+                   FontSize="18" />
+            <Label x:Name="SummaryLabel"
+                   FontSize="13"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+        </VerticalStackLayout>
+
+        <CollectionView x:Name="PurchaseList" Grid.Row="1" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="services:ArticlePurchase">
+                    <Grid Padding="16,12" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+
+                        <Label Grid.Row="0" Grid.Column="0"
+                               Text="{Binding DisplayDate}"
+                               FontAttributes="Bold" />
+
+                        <Label Grid.Row="0" Grid.Column="1"
+                               Text="{Binding DisplayTotal}"
+                               FontAttributes="Bold" />
+
+                        <Label Grid.Row="1" Grid.Column="0"
+                               Text="{Binding Shop}"
+                               FontSize="12"
+                               LineBreakMode="TailTruncation"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Text="{Binding DisplayQuantity}"
+                               FontSize="12"
+                               HorizontalOptions="End"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>
